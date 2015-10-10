@@ -6,14 +6,10 @@ import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import de.sstoehr.harreader.HarReader;
-import de.sstoehr.harreader.HarReaderException;
-import de.sstoehr.harreader.model.Har;
-import de.sstoehr.harreader.model.HarEntry;
 
 @Component
 public class AutomationEventListener extends AbstractWebDriverEventListener {
@@ -32,6 +28,14 @@ public class AutomationEventListener extends AbstractWebDriverEventListener {
 	
 	@Value("${net.export.directory.archive}")
 	private String netExportDirectoryArchive;
+	
+	@Override
+	public void afterChangeValueOf(WebElement element, WebDriver driver) {
+		// TODO Auto-generated method stub
+		super.afterChangeValueOf(element, driver);
+		
+		System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFF");
+	}
 	
 	@Override
 	public void beforeNavigateTo(String url, WebDriver driver) {
@@ -65,15 +69,11 @@ public class AutomationEventListener extends AbstractWebDriverEventListener {
 			// Have to add a delay or HAR file not created
 			Thread.sleep(mediumDelay);
 			
-			parseNetExport();
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (HarReaderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		} 		
 		System.out.println("Done!");
 	}
 	
@@ -90,15 +90,5 @@ public class AutomationEventListener extends AbstractWebDriverEventListener {
 		
 	}
 	
-	private void parseNetExport() throws HarReaderException {
-		Collection<File> exportedFiles = FileUtils.listFiles(
-				new File(netExportDirectory), new String[] {"har"}, false);
-		
-		HarReader harReader = new HarReader();
-		Har har = harReader.readFromFile(exportedFiles.iterator().next());
-		
-		for (HarEntry harEntry :  har.getLog().getEntries()) {
-			System.out.println(harEntry.getRequest().getUrl() + "-->" + harEntry.getResponse().getStatus());
-		}
-	}
+	
 }

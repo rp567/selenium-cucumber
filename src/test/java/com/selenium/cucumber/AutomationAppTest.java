@@ -8,6 +8,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.selenium.cucumber.AutomationApp;
 
+import de.sstoehr.harreader.HarReaderException;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 public class AutomationAppTest {
@@ -16,7 +18,7 @@ public class AutomationAppTest {
 	private AutomationApp auto;
 	
 	@Test
-	public void testMainPage() {
+	public void testMainPage() throws HarReaderException {
 		auto.start();
 	}
 
